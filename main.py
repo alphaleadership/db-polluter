@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import json
-import random
 import argparse
 import os
 
 import yaml
 import requests
 from faker import Faker
+import secrets
 
 fake = Faker()
 
@@ -50,7 +50,7 @@ def run(data, use_burp):
                         if field_type.get("select", None):
                             variable_name = "%s_%s" % (field_name, "select")
 
-                            vars()[variable_name] = random.choice(field_type["select"])
+                            vars()[variable_name] = secrets.choice(field_type["select"])
 
                             data_to_post[field_name] = vars()[variable_name]
 
@@ -104,8 +104,7 @@ def run(data, use_burp):
                             data_to_post[field_name] = phone_number
 
                         elif field_type == "credit_card_number":
-                            card_type = random.choice(
-                                ["mastercard", "visa", "visa16", "visa19"]
+                            card_type = secrets.choice(["mastercard", "visa", "visa16", "visa19"]
                             )
                             credit_card_number = fake.credit_card_number(
                                 card_type=card_type
